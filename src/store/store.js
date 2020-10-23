@@ -82,16 +82,18 @@ export default new Vuex.Store({
 
     // Xóa user
     removeUser(state, payload) {
-      fetch('https://reqres.in/api/users/' + payload.index, {
+      fetch('https://reqres.in/api/users/' + payload[0].index, {
         method: 'DELETE'
-      }).then(response =>
+      }).then(response => {
         alert(
           'Removed user: ' +
-            payload.user.first_name +
+            payload[0].user.first_name +
             ' ' +
-            payload.user.last_name
-        )
-      );
+            payload[0].user.last_name
+        );
+        //refresh lại user list
+        payload[1].push('/user');
+      });
     },
 
     editUser(state, payload) {

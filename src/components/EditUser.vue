@@ -28,9 +28,12 @@
           v-model="mailEdit"
         />
       </div>
-      <button type="submit" class="btn btn-success" @click="updateUser">
+      <button type="submit" class="btn btn-success mt-3" @click="updateUser">
         Update
       </button>
+      <router-link tag="button" class="btn btn-info mt-3" to="/user">
+        Back
+      </router-link>
     </form>
   </div></template
 >

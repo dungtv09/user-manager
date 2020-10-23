@@ -108,6 +108,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     this.$store.commit('refreshUserList');
+    this.$store.state.isActiveAddUserForm = false;
     next();
   },
 
@@ -132,7 +133,7 @@ export default {
     },
 
     removeUser(user, index) {
-      this.$store.commit('removeUser', { user, index });
+      this.$store.commit('removeUser', [{ user, index }, this.$router]);
     },
 
     editUser(user, index) {
