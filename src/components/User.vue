@@ -1,7 +1,41 @@
 <template>
   <div class="text-center mt-5">
-    <h1>Users</h1>
-    <div class="users-table mt-5">
+    <h1>Users List</h1>
+    <button type="button" class="btn btn-primary mt-5" @click="addUser">
+      Add new user
+    </button>
+    <form v-if="isActiveAddUserForm" class="container">
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            class="form-control mt-5"
+            placeholder="First name"
+            v-model="newFirstName"
+          />
+        </div>
+        <div class="col">
+          <input
+            type="text"
+            class="form-control mt-5"
+            placeholder="Last name"
+            v-model="newLastName"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="email"
+          class="form-control mt-3"
+          placeholder="Email"
+          v-model="newEmail"
+        />
+      </div>
+      <button type="submit" class="btn btn-success" @click="submitUser">
+        Submit
+      </button>
+    </form>
+    <div class="users-table mt-3">
       <table class="table">
         <thead class="thead-dark">
           <tr>
@@ -23,8 +57,21 @@
             <td class="align-middle">{{ user.last_name }}</td>
             <td class="align-middle">{{ user.email }}</td>
             <td class="align-middle">
-              <button type="button" class="btn btn-primary">Edit</button>
-              <button type="button" class="btn btn-secondary">Remove</button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="editUser(user, index)"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="removeUser(user, index)"
+              >
+                Remove
+              </button>
             </td>
           </tr>
         </tbody>
@@ -37,42 +84,55 @@
 export default {
   data() {
     return {
-      users: []
+      newFirstName: '',
+      newLastName: '',
+      newEmail: '',
+      showModal: false
     };
   },
+  computed: {
+    isActiveAddUserForm() {
+      return this.$store.state.isActiveAddUserForm;
+    },
+
+    users() {
+      return this.$store.state.users;
+    }
+  },
+
   created() {
     this.fetchData();
   },
   watch: {
     $route: 'fetchData'
   },
+
   methods: {
     fetchData() {
-      let pageNumber = -1;
-      let getPageNumber = new Promise(function(resolve, reject) {
-        fetch('https://reqres.in/api/users?page=1')
-          .then(response => response.json())
-          .then(data => {
-            let temp = data['total_pages'];
-            resolve(temp);
-          });
+      this.$store.commit('fetchData');
+    },
+
+    addUser() {
+      this.$store.commit('toggleIsActiveAddUserForm');
+    },
+
+    submitUser() {
+      this.$store.commit('submitUser', {
+        firstName: this.newFirstName,
+        lastName: this.newLastName,
+        email: this.newEmail
       });
-      getPageNumber.then(temp => {
-        pageNumber = temp;
-        for (let i = 1; i <= pageNumber; i++) {
-          let getUsers = new Promise(function(resolve, reject) {
-            fetch('https://reqres.in/api/users?page=' + i)
-              .then(response => response.json())
-              .then(data => {
-                let temp = data.data;
-                resolve(temp);
-              });
-          });
-          getUsers.then(temp => {
-            this.users = this.users.concat(temp);
-          });
-        }
-      });
+      this.newFirstName = '';
+      this.newLastName = '';
+      this.newEmail = '';
+    },
+
+    removeUser(user, index) {
+      this.$store.commit('removeUser', { user, index });
+    },
+
+    editUser(user, index) {
+      this.$store.commit('editUser', { user, index, router: this.$router });
     }
   }
 };

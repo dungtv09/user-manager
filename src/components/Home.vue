@@ -1,7 +1,8 @@
 <template>
   <div class="home container text-center mt-5">
-    <h1>Homepage</h1>
-    <p class="mt-5">
+    <h1>User Manager</h1>
+    <img src="@/assets/logo.jpg" alt="logo" width="100px" class="mt-5" />
+    <p class="mt-3">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet veritatis
       eveniet officia quasi molestias et vitae cupiditate dolorum commodi odio
       in, ab, natus numquam suscipit accusantium provident doloribus pariatur
