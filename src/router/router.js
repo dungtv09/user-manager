@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/Home';
 import User from '@/components/User';
+import EditUser from '@/components/EditUser';
 import SignIn from '@/components/SignIn';
 import SignUp from '@/components/SignUp';
 
@@ -19,6 +20,11 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: User
+    },
+    {
+      path: '/user/:id',
+      name: 'editUser',
+      component: EditUser
     },
     {
       path: '/signin',

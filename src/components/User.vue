@@ -106,6 +106,10 @@ export default {
   watch: {
     $route: 'fetchData'
   },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('refreshUserList');
+    next();
+  },
 
   methods: {
     fetchData() {

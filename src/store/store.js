@@ -12,30 +12,37 @@ export default new Vuex.Store({
     // Hiện danh sách user
     fetchData(state) {
       let pageNumber = -1;
+      let pages = -1;
+      let usersTemp = [];
       let getPageNumber = new Promise(function(resolve, reject) {
-        fetch('https://reqres.in/api/users?page=1')
+        fetch('https://reqres.in/api/users')
           .then(response => response.json())
           .then(data => {
-            let temp = data['total_pages'];
-            resolve(temp);
+            pages = data.total_pages;
+            resolve(pages);
           });
       });
-      getPageNumber.then(temp => {
-        pageNumber = temp;
+      getPageNumber.then(pages => {
+        pageNumber = pages;
         for (let i = 1; i <= pageNumber; i++) {
           let getUsers = new Promise(function(resolve, reject) {
             fetch('https://reqres.in/api/users?page=' + i)
               .then(response => response.json())
               .then(data => {
-                let temp = data.data;
-                resolve(temp);
+                usersTemp = data.data;
+                resolve(usersTemp);
               });
           });
-          getUsers.then(temp => {
-            state.users = state.users.concat(temp);
+          getUsers.then(usersTemp => {
+            state.users = state.users.concat(usersTemp);
+            usersTemp = [];
           });
         }
       });
+    },
+
+    refreshUserList(state) {
+      state.users = [];
     },
 
     // Bật/tắt form add user
@@ -60,15 +67,14 @@ export default new Vuex.Store({
         })
           .then(response => response.json())
           .then(data => {
-            console.log(data);
             alert(
               'New user "' +
                 payload.firstName +
                 ' ' +
                 payload.lastName +
-                '" with id "' +
+                '" with id ' +
                 data.id +
-                '" created'
+                ' created'
             );
           });
       }
@@ -89,7 +95,27 @@ export default new Vuex.Store({
     },
 
     editUser(state, payload) {
-      payload.router.push('/');
+      payload.router.push({
+        name: 'editUser',
+        params: { id: payload.user.id }
+      });
+    },
+    updateUser(state, payload) {
+      if (
+        payload[0].firstName === '' ||
+        payload[0].lastName === '' ||
+        payload[0].email === ''
+      ) {
+        alert('Input field must be filled out');
+      } else {
+        fetch('https://reqres.in/api/users/' + payload[1], {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload[0])
+        }).then(response => alert('User with id ' + payload[1] + ' updated'));
+      }
     }
   }
 });
