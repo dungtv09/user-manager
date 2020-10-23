@@ -16,16 +16,24 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link class="nav-link" to="/user">Manager</router-link>
+          <router-link class="nav-link" to="/user"
+            ><i class="fas fa-user-edit"></i> Manager</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/signin">Sign In</router-link>
+          <router-link class="nav-link" to="/signin"
+            ><i class="fas fa-sign-in-alt"></i> Sign In</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/signup">Sign Up</router-link>
+          <router-link class="nav-link" to="/signup"
+            ><i class="fas f fa-sign-in-alt"></i> Sign Up</router-link
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link sign-out">Sign Out</a>
+          <a class="nav-link sign-out"
+            ><i class="fas fa-sign-out-alt"></i> Sign Out</a
+          >
         </li>
       </ul>
     </div>
