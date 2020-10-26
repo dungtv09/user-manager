@@ -108,7 +108,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     this.$store.commit('refreshUserList');
-    this.$store.state.isActiveAddUserForm = false;
+    this.$store.commit('falseIsActiveAddUserForm');
     next();
   },
 

@@ -5,10 +5,11 @@ import User from '@/components/User';
 import EditUser from '@/components/EditUser';
 import SignIn from '@/components/SignIn';
 import SignUp from '@/components/SignUp';
+import store from '@/store/store';
 
 Vue.use(Router);
 
-export default new Router({
+export const router = new Router({
   linkExactActiveClass: 'active',
   routes: [
     {
@@ -19,7 +20,15 @@ export default new Router({
     {
       path: '/user',
       name: 'user',
-      component: User
+      component: User,
+      beforeEnter: (to, from, next) => {
+        if (store.state.isSignIn) {
+          next();
+        } else {
+          alert('Please sign in');
+          next('/signin');
+        }
+      }
     },
     {
       path: '/user/:id',

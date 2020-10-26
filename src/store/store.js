@@ -6,9 +6,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     users: [],
-    isActiveAddUserForm: false
+    isActiveAddUserForm: false,
+    isSignIn: false
   },
   mutations: {
+    falseIsActiveAddUserForm(state) {
+      state.isActiveAddUserForm = false;
+    },
     // Hiện danh sách user
     fetchData(state) {
       let pageNumber = -1;
@@ -118,6 +122,56 @@ export default new Vuex.Store({
           body: JSON.stringify(payload[0])
         }).then(response => alert('User with id ' + payload[1] + ' updated'));
       }
+    },
+
+    //sign in
+    signIn(state, payload) {
+      fetch('https://reqres.in/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload[0])
+      }).then(function(res) {
+        if (res.status !== 200) {
+          res.json().then(data => {
+            alert('Error: ' + data.error);
+          });
+          return;
+        }
+        res.json().then(data => {
+          state.isSignIn = true;
+          payload[1].push('/user');
+        });
+      });
+    },
+
+    //sign in
+    signUp(state, payload) {
+      fetch('https://reqres.in/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload[0])
+      }).then(function(res) {
+        if (res.status !== 200) {
+          res.json().then(data => {
+            alert('Error: ' + data.error);
+          });
+          return;
+        }
+        res.json().then(data => {
+          alert('Sign up success. Please sign in');
+          payload[1].push('/signin');
+        });
+      });
+    },
+
+    //sign out
+    signOut(state, router) {
+      router.push('/signin');
+      state.isSignIn = false;
     }
   }
 });

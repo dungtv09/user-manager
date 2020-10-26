@@ -1,6 +1,6 @@
 <template>
   <div class="text-center mt-5">
-    <h1>EDIT USER id: {{ id }}</h1>
+    <h1>Edit user with id: {{ id }}</h1>
     <form class="container mt-3">
       <div class="row">
         <div class="col">
@@ -47,6 +47,11 @@ export default {
       lastNameEdit: '',
       mailEdit: ''
     };
+  },
+  watch: {
+    $route(to, from) {
+      this.id = to.params.id;
+    }
   },
   methods: {
     updateUser() {

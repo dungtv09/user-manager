@@ -52,10 +52,13 @@ export default {
   },
   methods: {
     signIn() {
-      this.$store.commit('signIn', {
-        email: this.email,
-        password: this.password
-      });
+      this.$store.commit('signIn', [
+        {
+          email: this.email,
+          password: this.password
+        },
+        this.$router
+      ]);
     }
   }
 };

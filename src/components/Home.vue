@@ -2,7 +2,7 @@
   <div class="home container text-center mt-5">
     <h1 class="align-middle">
       <img src="@/assets/logo.jpg" alt="logo" width="100px" />
-      User Manager
+      Introduce
     </h1>
     <p class="mt-5">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet veritatis
