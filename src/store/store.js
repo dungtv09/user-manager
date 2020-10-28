@@ -7,9 +7,13 @@ export default new Vuex.Store({
   state: {
     users: [],
     isActiveAddUserForm: false,
-    isSignIn: false
+    isSignIn: localStorage.getItem('isSignIn') || 'false'
   },
   mutations: {
+    checkIsSignIn(state) {
+      state.isSignIn = localStorage.getItem('isSignIn') || 'false';
+    },
+
     falseIsActiveAddUserForm(state) {
       state.isActiveAddUserForm = false;
     },
@@ -140,7 +144,7 @@ export default new Vuex.Store({
           return;
         }
         res.json().then(data => {
-          state.isSignIn = true;
+          localStorage.setItem('isSignIn', true);
           payload[1].push('/user');
         });
       });
@@ -170,8 +174,8 @@ export default new Vuex.Store({
 
     //sign out
     signOut(state, router) {
+      localStorage.removeItem('isSignIn');
       router.push('/signin');
-      state.isSignIn = false;
     }
   }
 });

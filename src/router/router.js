@@ -22,7 +22,7 @@ export const router = new Router({
       name: 'user',
       component: User,
       beforeEnter: (to, from, next) => {
-        if (store.state.isSignIn) {
+        if (store.state.isSignIn === 'true') {
           next();
         } else {
           alert('Please sign in');
@@ -46,4 +46,13 @@ export const router = new Router({
       component: SignUp
     }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  store.commit('checkIsSignIn');
+  next();
+});
+
+router.afterEach((to, from, next) => {
+  store.commit('checkIsSignIn');
 });

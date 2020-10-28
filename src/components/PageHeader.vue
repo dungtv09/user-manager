@@ -20,17 +20,17 @@
             ><i class="fas fa-user-edit"></i> Manager</router-link
           >
         </li>
-        <li class="nav-item" v-if="!isSignIn">
+        <li class="nav-item" v-if="isSignIn === 'false'">
           <router-link class="nav-link" to="/signin"
             ><i class="fas fa-sign-in-alt"></i> Sign In</router-link
           >
         </li>
-        <li class="nav-item" v-if="!isSignIn">
+        <li class="nav-item" v-if="isSignIn === 'false'">
           <router-link class="nav-link" to="/signup"
             ><i class="fas f fa-sign-in-alt"></i> Sign Up</router-link
           >
         </li>
-        <li class="nav-item" v-if="isSignIn">
+        <li class="nav-item" v-if="isSignIn === 'true'">
           <a class="nav-link sign-out" @click="signOut"
             ><i class="fas fa-sign-out-alt"></i> Sign Out</a
           >
@@ -42,9 +42,14 @@
 
 <script>
 export default {
-  computed: {
-    isSignIn() {
-      return this.$store.state.isSignIn;
+  data() {
+    return {
+      isSignIn: this.$store.state.isSignIn || 'false'
+    };
+  },
+  watch: {
+    $route(to, from) {
+      this.isSignIn = this.$store.state.isSignIn || 'false';
     }
   },
   methods: {
