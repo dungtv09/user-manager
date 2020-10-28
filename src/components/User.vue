@@ -107,22 +107,22 @@ export default {
     $route: 'fetchData'
   },
   beforeRouteLeave(to, from, next) {
-    this.$store.commit('refreshUserList');
-    this.$store.commit('falseIsActiveAddUserForm');
+    this.$store.dispatch('refreshUserList');
+    this.$store.dispatch('falseIsActiveAddUserForm');
     next();
   },
 
   methods: {
     fetchData() {
-      this.$store.commit('fetchData');
+      this.$store.dispatch('fetchData');
     },
 
     addUser() {
-      this.$store.commit('toggleIsActiveAddUserForm');
+      this.$store.dispatch('toggleIsActiveAddUserForm');
     },
 
     submitUser() {
-      this.$store.commit('submitUser', {
+      this.$store.dispatch('submitUser', {
         firstName: this.newFirstName,
         lastName: this.newLastName,
         email: this.newEmail
@@ -133,11 +133,11 @@ export default {
     },
 
     removeUser(user, index) {
-      this.$store.commit('removeUser', [{ user, index }, this.$router]);
+      this.$store.dispatch('removeUser', [{ user, index }, this.$router]);
     },
 
     editUser(user, index) {
-      this.$store.commit('editUser', { user, index, router: this.$router });
+      this.$store.dispatch('editUser', { user, index, router: this.$router });
     }
   }
 };

@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     signIn() {
-      this.$store.commit('signIn', [
+      this.$store.dispatch('signIn', [
         {
           email: this.email,
           password: this.password

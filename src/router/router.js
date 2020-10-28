@@ -49,10 +49,10 @@ export const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  store.commit('checkIsSignIn');
+  store.dispatch('checkIsSignIn');
   next();
 });
 
 router.afterEach((to, from, next) => {
-  store.commit('checkIsSignIn');
+  store.dispatch('checkIsSignIn');
 });

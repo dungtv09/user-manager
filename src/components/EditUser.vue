@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     updateUser() {
-      this.$store.commit('updateUser', [
+      this.$store.dispatch('updateUser', [
         {
           firstName: this.firstNameEdit,
           lastName: this.lastNameEdit,

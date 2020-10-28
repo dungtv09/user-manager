@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     signOut() {
-      this.$store.commit('signOut', this.$router);
+      this.$store.dispatch('signOut', this.$router);
     }
   }
 };

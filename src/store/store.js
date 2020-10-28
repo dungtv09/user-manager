@@ -9,16 +9,16 @@ export default new Vuex.Store({
     isActiveAddUserForm: false,
     isSignIn: localStorage.getItem('isSignIn') || 'false'
   },
-  mutations: {
-    checkIsSignIn(state) {
+  actions: {
+    checkIsSignIn({ commit, state }) {
       state.isSignIn = localStorage.getItem('isSignIn') || 'false';
     },
 
-    falseIsActiveAddUserForm(state) {
+    falseIsActiveAddUserForm({ commit, state }) {
       state.isActiveAddUserForm = false;
     },
-    // Hiện danh sách user
-    fetchData(state) {
+
+    fetchData({ commit, state }) {
       let pageNumber = -1;
       let pages = -1;
       let usersTemp = [];
@@ -49,16 +49,17 @@ export default new Vuex.Store({
       });
     },
 
-    refreshUserList(state) {
+    refreshUserList({ commit, state }) {
       state.users = [];
     },
 
     // Bật/tắt form add user
-    toggleIsActiveAddUserForm(state) {
+    toggleIsActiveAddUserForm({ commit, state }) {
       state.isActiveAddUserForm = !state.isActiveAddUserForm;
     },
+
     // Submit user mới
-    submitUser(state, payload) {
+    submitUser({ commit }, payload) {
       if (
         payload.firstName === '' ||
         payload.lastName === '' ||
@@ -86,10 +87,8 @@ export default new Vuex.Store({
             );
           });
       }
-    },
-
-    // Xóa user
-    removeUser(state, payload) {
+    }, // Xóa user
+    removeUser({ commit }, payload) {
       fetch('https://reqres.in/api/users/' + payload[0].index, {
         method: 'DELETE'
       }).then(response => {
@@ -100,17 +99,18 @@ export default new Vuex.Store({
             payload[0].user.last_name
         );
         //refresh lại user list
-        payload[1].push('/user');
+        payload[1].push('/user').catch(err => {});
       });
     },
 
-    editUser(state, payload) {
+    editUser({ commit }, payload) {
       payload.router.push({
         name: 'editUser',
         params: { id: payload.user.id }
       });
     },
-    updateUser(state, payload) {
+
+    updateUser({ commit }, payload) {
       if (
         payload[0].firstName === '' ||
         payload[0].lastName === '' ||
@@ -118,18 +118,25 @@ export default new Vuex.Store({
       ) {
         alert('Input field must be filled out');
       } else {
-        fetch('https://reqres.in/api/users/' + payload[1], {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload[0])
-        }).then(response => alert('User with id ' + payload[1] + ' updated'));
+        async function update() {
+          let response = await fetch(
+            'https://reqres.in/api/users/' + payload[1],
+            {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload[0])
+            }
+          );
+          alert('User with id ' + payload[1] + ' updated');
+        }
+        update();
       }
     },
 
     //sign in
-    signIn(state, payload) {
+    signIn({ commit }, payload) {
       fetch('https://reqres.in/api/login', {
         method: 'POST',
         headers: {
@@ -151,7 +158,7 @@ export default new Vuex.Store({
     },
 
     //sign in
-    signUp(state, payload) {
+    signUp({ commit }, payload) {
       fetch('https://reqres.in/api/register', {
         method: 'POST',
         headers: {
@@ -173,7 +180,7 @@ export default new Vuex.Store({
     },
 
     //sign out
-    signOut(state, router) {
+    signOut({ commit }, router) {
       localStorage.removeItem('isSignIn');
       router.push('/signin');
     }
